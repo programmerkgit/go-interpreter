@@ -36,3 +36,7 @@ https://direnv.net/
 ```
 brew install direnv
 ```# go-interpreter
+
+
+### CodeReviewComments
+https://github.com/golang/go/wiki/CodeReviewComments#receiver-type

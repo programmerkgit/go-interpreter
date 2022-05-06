@@ -65,6 +65,22 @@ type LetStatement struct {
 	Value Expression
 }
 
+type IntegerLiteral struct {
+	Token token.Token
+	Value int64
+}
+
+func (i IntegerLiteral) TokenLiteral() string {
+	return i.Token.Literal
+}
+
+func (i IntegerLiteral) String() string {
+	return i.Token.Literal
+}
+
+func (i IntegerLiteral) expressionNode() {
+}
+
 func (ls *LetStatement) String() string {
 	var out bytes.Buffer
 	out.WriteString(ls.TokenLiteral() + " ")

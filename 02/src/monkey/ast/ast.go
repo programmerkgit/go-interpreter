@@ -3,6 +3,7 @@ package ast
 import (
 	"bytes"
 	"monkey/token"
+	"strings"
 )
 
 type Expression interface {
@@ -194,4 +195,82 @@ func (b Boolean) TokenLiteral() string {
 
 func (b Boolean) String() string {
 	return b.Token.Literal
+}
+
+type BlockStatement struct {
+	Token      token.Token
+	Statements []Statement
+}
+
+func (s *BlockStatement) statementNode() {
+}
+
+func (s *BlockStatement) TokenLiteral() string {
+	return s.Token.Literal
+}
+
+func (s *BlockStatement) String() string {
+	var out bytes.Buffer
+	for _, stmt := range s.Statements {
+		out.WriteString(stmt.String())
+	}
+	return out.String()
+}
+
+type IfExpression struct {
+	Token       token.Token
+	Condition   Expression
+	Consequence *BlockStatement
+	Altenative  *BlockStatement
+}
+
+func (i *IfExpression) TokenLiteral() string {
+	return i.Token.Literal
+}
+
+func (i *IfExpression) String() string {
+	var out bytes.Buffer
+	out.WriteString("if")
+	out.WriteString(i.Condition.String())
+	out.WriteString(" ")
+	out.WriteString(i.Consequence.String())
+
+	if i.Altenative != nil {
+		out.WriteString("else")
+		out.WriteString("")
+		out.WriteString(i.Altenative.String())
+	}
+	return out.String()
+}
+
+func (i *IfExpression) expressionNode() {
+}
+
+type FunctionLiteral struct {
+	Token      token.Token
+	Parameters []*Identifier
+	Body       *BlockStatement
+}
+
+func (f *FunctionLiteral) TokenLiteral() string {
+	return f.Token.Literal
+}
+
+func (f *FunctionLiteral) String() string {
+	var out bytes.Buffer
+	out.WriteString(f.TokenLiteral())
+	out.WriteString("(")
+	params := []string{}
+	for _, p := range f.Parameters {
+		params = append(params, p.String())
+	}
+	out.WriteString(strings.Join(params, ","))
+	out.WriteString(") ")
+	out.WriteString(f.Body.String())
+	return out.String()
+}
+
+func (f FunctionLiteral) expressionNode() {
+	//TODO implement me
+	panic("implement me")
 }
